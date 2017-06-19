@@ -4,8 +4,8 @@
  */
 import React from 'react';
 import './ChatBox.css';
-import { Panel, InputGroup, FormControl, Button } from 'react-bootstrap';
-
+import { Panel, InputGroup, FormControl, Button , Table} from 'react-bootstrap';
+import Inbox from './Inbox.jsx';
 let io = require('socket.io-client');
 let socket =  io();
 
@@ -25,7 +25,7 @@ export default class ChatBox extends React.Component {
   constructor(props) {
     super(props);
     this.state = {chatBoxShow: 'tabbed_sidebar ng-scope chat_sidebar', message:{user:'', text:'', server_read: false,
-        idMessage: 0},
+        idMessage: 0, time: new Date()}, messagesInbox: [],
         emitAddress: '', onAddress: '', messages: [{user: '', text: ''}], text: ''};
     this.handleChange = this.handleChange.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
@@ -48,7 +48,7 @@ export default class ChatBox extends React.Component {
 
       }
     });
-    this.loadMessage();
+    this.props.onAddress==='receiveClient' && this.loadMessage();
   }
 
   componentWillReceiveProps(props) {
@@ -63,9 +63,9 @@ export default class ChatBox extends React.Component {
     fetch(`api/message`).then(response =>
       response.json()
         ).then(message => {
-            this.setState({ messages: message });
-            console.log('List Messages load from database');
-            console.log(this.state.messages);
+            this.setState({ messagesInbox: message });
+            console.log('List Messages Inbox load from database');
+            console.log(this.state.messagesInbox);
             // if(message.server_read===true){
             //     console.log('tin nhan server da doc: ', message);
             // }
@@ -77,9 +77,10 @@ export default class ChatBox extends React.Component {
 
   handleChange(event) {
     const idMessage = new Date().getTime();
+    const time = new Date();
     this.setState({text: event.target.value});
     this.setState({ message: {user: this.props.user, text: event.target.value,
-        server_read: false, idMessage: idMessage}});
+        server_read: false, idMessage: idMessage, time: time}});
     console.log('id message la: ', idMessage);
   }
 
@@ -122,6 +123,7 @@ export default class ChatBox extends React.Component {
     // console.log(this.state.messages);
     return (
       <div>
+        <Inbox messagesInbox = {this.state.messagesInbox}/>
         <Panel bsStyle = "primary" collapsible defaultExpanded header="ChatBox">
           <MessageContent messages={this.state.messages}/>
           <InputGroup>
