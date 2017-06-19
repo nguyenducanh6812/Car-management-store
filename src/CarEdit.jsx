@@ -28,12 +28,6 @@ export default class CarEdit extends React.Component {
   }
 
   onChange(e) {
-    /*
-     * Since state is immutable, we need a copy. If we modify this.state.car itself and
-     * set it as the new state, It will seem to work, but we'll
-     * run into problems later, especially when comparing current and new state
-     * within Lifecycle methods.
-     */
     const changes = {};
     changes[e.target.name] = { $set: e.target.value };
     const modifiedCar = update(this.state.car, changes);

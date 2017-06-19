@@ -31,7 +31,6 @@ CarRow.propTypes = {
 };
 
 function CarTable(props) {
-  // console.log("Rendering car table, num items:", props.cars.length);
   let carRows = props.cars.map((car, i) =>
       <CarRow key={i} car={car} removeCar = {props.removeCar} />);
   return (
@@ -102,23 +101,6 @@ export default class CarList extends React.Component {
       console.log(err);
     });
   }
-
-  // loadMessage() {
-  //   console.log('Load message was call');
-  //   fetch(`api/message`).then(response =>
-  //     response.json()
-  //   ).then(message => {
-  //     this.setState({ messages: message });
-  //     console.log('List Messages from carlist.jsx');
-  //     console.log(this.state.messages);
-  //     if(message[0].server_read===true){
-  //       console.log('tin nhan server da doc: ', message);
-  //     }
-  //     else console.log('Tin nhan chua duoc doc');
-  //   }).catch(err => {
-  //     console.log(err);
-  //     });
-  // }
 
   changeFilter(newFilter) {
     const search = Object.keys(newFilter)

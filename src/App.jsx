@@ -13,7 +13,6 @@ ReactDOM.render(
       <Route path="/cars" component={CarList} />
       <Route path="/client" component={ClientSide} />
       <Route path="/cars/:id" component={CarEdit} />
-      {/*<Route path="/chatbox" component={ChatBox} />*/}
       <Redirect from="/" to="/cars" />
       <Route path="*" component={NoMatch} />
     </Router>

@@ -3,7 +3,6 @@
  * Created by admin on 6/14/17.
  */
 import React from 'react';
-import './ChatBox.css';
 import { Panel, InputGroup, FormControl, Button , Table} from 'react-bootstrap';
 import Inbox from './Inbox.jsx';
 let io = require('socket.io-client');
@@ -66,10 +65,6 @@ export default class ChatBox extends React.Component {
             this.setState({ messagesInbox: message });
             console.log('List Messages Inbox load from database');
             console.log(this.state.messagesInbox);
-            // if(message.server_read===true){
-            //     console.log('tin nhan server da doc: ', message);
-            // }
-            // else console.log('Tin nhan chua duoc doc');
         }).catch(err => {
             console.log(err);
         });
@@ -119,8 +114,6 @@ export default class ChatBox extends React.Component {
   }
 
   render() {
-    // console.log('Tin nhan mac dinh cua state.');
-    // console.log(this.state.messages);
     return (
       <div>
         <Inbox messagesInbox = {this.state.messagesInbox}/>
