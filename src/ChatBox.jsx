@@ -3,14 +3,17 @@
  * Created by admin on 6/14/17.
  */
 import React from 'react';
-import { Panel, InputGroup, FormControl, Button , Table} from 'react-bootstrap';
+import { Panel, InputGroup, FormControl, Button } from 'react-bootstrap';
 import Inbox from './Inbox.jsx';
 let io = require('socket.io-client');
 let socket =  io();
 
 const MessageContent = (props) => {
-  let messages = props.messages.map((message, i) =>
-    <div key={i}>{message.user} {message.text}</div>);
+  let messages = props.messages.map((message, i) => {
+      let user;
+      message.user!=='' && (user = message.user + ': ');
+      return (<div key={i}>{user} {message.text}</div>);
+  });
   return(
     <div>{messages}</div>
   );
@@ -36,7 +39,7 @@ export default class ChatBox extends React.Component {
     socket.on(this.props.onAddress, (data) => {
       console.log('Receive message: ', data.message);
       this.receiveMessage(data);
-      if(data.message.user ==='Client: '){
+      if(data.message.server_read === false){
           console.log('Admin da doc tin nhan.');
           data.message.server_read = true;
           fetch(`/api/message/update`, {

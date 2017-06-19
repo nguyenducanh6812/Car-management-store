@@ -5,6 +5,7 @@ import React from 'react';
 import './ClientSide.css';
 import ListCars from './CarListClientSide.jsx';
 import ChatBox from './ChatBox.jsx';
+import { FormControl, InputGroup, Button} from 'react-bootstrap';
 
 export default class ClientSide extends React.Component {
   static get propTypes() {
@@ -13,7 +14,9 @@ export default class ClientSide extends React.Component {
 
   constructor() {
     super();
-    this.state = { cars: [], emitAddress: 'toServer', onAddress: 'receiveServer' };
+    this.state = { cars: [], emitAddress: 'toServer', onAddress: 'receiveServer', email: '' };
+    this.onChangeEmail = this.onChangeEmail.bind(this);
+    this.changeEmail = this.changeEmail.bind(this);
   }
 
   componentDidMount() {
@@ -34,13 +37,30 @@ export default class ClientSide extends React.Component {
     });
   }
 
+  onChangeEmail(event){
+    console.log('On change email');
+    this.setState({email: event.target.value});
+    console.log(this.state.email)
+  }
+
+  changeEmail(){
+    console.log('change email address');
+  }
+
   render() {
     console.log('Rendering Client side.');
     return (
       <div>
         <ListCars cars = {this.state.cars} />
+        <InputGroup>
+          <FormControl type = "text" bsSize = "large" validationState = "success" value = {this.state.email}
+                       onChange = {this.onChangeEmail} />
+          <InputGroup.Button>
+            <Button onClick={() => { this.changeEmail();}}>Accept</Button>
+          </InputGroup.Button>
+        </InputGroup>
         <ChatBox emitAddress = {this.state.emitAddress} onAddress = {this.state.onAddress}
-                 user = 'Client: '/>
+                 user = {this.state.email}/>
       </div>
     );
   }

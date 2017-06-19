@@ -774,10 +774,12 @@ webpackJsonp([0],{
 	
 	var MessageContent = function MessageContent(props) {
 	  var messages = props.messages.map(function (message, i) {
+	    var user = void 0;
+	    message.user !== '' && (user = message.user + ': ');
 	    return _react2.default.createElement(
 	      'div',
 	      { key: i },
-	      message.user,
+	      user,
 	      ' ',
 	      message.text
 	    );
@@ -819,7 +821,7 @@ webpackJsonp([0],{
 	      socket.on(this.props.onAddress, function (data) {
 	        console.log('Receive message: ', data.message);
 	        _this2.receiveMessage(data);
-	        if (data.message.user === 'Client: ') {
+	        if (data.message.server_read === false) {
 	          console.log('Admin da doc tin nhan.');
 	          data.message.server_read = true;
 	          fetch('/api/message/update', {
@@ -7778,6 +7780,8 @@ webpackJsonp([0],{
 	
 	var _ChatBox2 = _interopRequireDefault(_ChatBox);
 	
+	var _reactBootstrap = __webpack_require__(226);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -7804,7 +7808,9 @@ webpackJsonp([0],{
 	
 	    var _this = _possibleConstructorReturn(this, (ClientSide.__proto__ || Object.getPrototypeOf(ClientSide)).call(this));
 	
-	    _this.state = { cars: [], emitAddress: 'toServer', onAddress: 'receiveServer' };
+	    _this.state = { cars: [], emitAddress: 'toServer', onAddress: 'receiveServer', email: '' };
+	    _this.onChangeEmail = _this.onChangeEmail.bind(_this);
+	    _this.changeEmail = _this.changeEmail.bind(_this);
 	    return _this;
 	  }
 	
@@ -7831,15 +7837,46 @@ webpackJsonp([0],{
 	      });
 	    }
 	  }, {
+	    key: 'onChangeEmail',
+	    value: function onChangeEmail(event) {
+	      console.log('On change email');
+	      this.setState({ email: event.target.value });
+	      console.log(this.state.email);
+	    }
+	  }, {
+	    key: 'changeEmail',
+	    value: function changeEmail() {
+	      console.log('change email address');
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var _this3 = this;
+	
 	      console.log('Rendering Client side.');
 	      return _react2.default.createElement(
 	        'div',
 	        null,
 	        _react2.default.createElement(_CarListClientSide2.default, { cars: this.state.cars }),
+	        _react2.default.createElement(
+	          _reactBootstrap.InputGroup,
+	          null,
+	          _react2.default.createElement(_reactBootstrap.FormControl, { type: 'text', bsSize: 'large', validationState: 'success', value: this.state.email,
+	            onChange: this.onChangeEmail }),
+	          _react2.default.createElement(
+	            _reactBootstrap.InputGroup.Button,
+	            null,
+	            _react2.default.createElement(
+	              _reactBootstrap.Button,
+	              { onClick: function onClick() {
+	                  _this3.changeEmail();
+	                } },
+	              'Accept'
+	            )
+	          )
+	        ),
 	        _react2.default.createElement(_ChatBox2.default, { emitAddress: this.state.emitAddress, onAddress: this.state.onAddress,
-	          user: 'Client: ' })
+	          user: this.state.email })
 	      );
 	    }
 	  }]);
